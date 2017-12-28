@@ -1,0 +1,11 @@
+[APP_SETTINGS]
+secret_key = #Paste a random key. Can use the python OS module to generate a random key.
+
+
+
+[DB_SETTINGS]
+database_uri = #mysql connection string
+
+
+[GOOGLE_API]
+#TODO
