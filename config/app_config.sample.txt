@@ -8,4 +8,7 @@ database_uri = #mysql connection string
 
 
 [GOOGLE_API]
-#TODO
+client_secrets_file = #Path to JSON file that contains client info from Google API Dashboard
+scopes = #The scopes that your app is requesting from users
+api_service_name = #The service that you will be querying from Google API's
+api_version = 'v3'
