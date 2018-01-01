@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block body %}
+
+    <h1>Your events that happened on this day</h1>
+    {% if current_user.is_authenticated %}
+
+        
+        <h3 style="font-weight: 300; margin-left: 5px;">Hi {{ current_user.username }}!</h3>
+        
+    {% endif %}
+
+
+{% endblock %}

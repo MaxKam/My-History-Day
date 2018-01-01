@@ -2,16 +2,16 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1>
         <meta name="description" content="">
         <meta name="author" content="">
+        <meta name="google-signin-client_id" content={{ MY_CLIENT_ID  }}>
         <title>Your Day in History</title>
+        <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 
-        <!-- Custom styles for this template -->
-        <link href="#" rel="stylesheet">
     </head>
-
-    <body>
     
-    </body>
+
+    {% block body %}
+    {% endblock %}
 </html>
