@@ -12,3 +12,4 @@ client_secrets_file = #Path to JSON file that contains client info from Google A
 scopes = #The scopes that your app is requesting from users
 api_service_name = #The service that you will be querying from Google API's
 api_version = 'v3'
+client_id = #The client id from the client secrets file
