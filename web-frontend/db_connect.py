@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
 
 db = SQLAlchemy()
 
@@ -10,9 +9,6 @@ class User(db.Model):
     firstName = db.Column(db.String(120), nullable=False)
     lastName = db.Column(db.String(120), nullable=False)
     googleCredentials = db.Column(db.Text)
-
-    def __repr__(self):
-        return 'User: %s \n' % self.fullName
 
     def is_authenticated(self):
         return True
