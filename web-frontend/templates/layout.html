@@ -2,16 +2,22 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1>
-        <meta name="description" content="">
-        <meta name="author" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="#">
+        <meta name="author" content="#">
         <meta name="google-signin-client_id" content={{ MY_CLIENT_ID  }}>
         <title>Your Day in History</title>
         <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 
     </head>
-    
+    <body>
+        <a href="/logout">Logout</a>
+        {% if current_user.is_authenticated %}
+            <h3>Hi {{ current_user.firstName }}!</h3>
+        {% endif %}
+        {% block body %}
+        {% endblock %}
+    </body>
 
-    {% block body %}
-    {% endblock %}
+    
 </html>
