@@ -12,7 +12,7 @@ import google_auth_oauthlib.flow
 
 #Instantiate ConfigParser and point to config file
 config = ConfigParser()
-config.read("../config/app_config.txt")
+config.read("./config/app_config.txt")
 
 #Set up Flask 
 app = Flask(__name__)
