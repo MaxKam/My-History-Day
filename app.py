@@ -49,8 +49,6 @@ def test_api_request():
   #              credentials in a persistent database instead.
   flask.session['credentials'] = credentials_to_dict(credentials)
 
-  #now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-
   now = datetime.datetime.now()
   current_year = now.year
   events_list = {}
@@ -186,4 +184,4 @@ if __name__ == '__main__':
 
   # Specify a hostname and port that are set as a valid redirect URI
   # for your API project in the Google API Console.
-  app.run('localhost', 8080, debug=True)
+  app.run('localhost', 8080, debug=False)
