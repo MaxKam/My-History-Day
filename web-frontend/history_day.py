@@ -3,13 +3,14 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from configparser import ConfigParser
 from db_connect import db, User
+from gtoken_verifier import GTokenVerify
 
 import os
 import json
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 
-#Set up ConfigParser and point to config file
+#Instantiate ConfigParser and point to config file
 config = ConfigParser()
 config.read("../config/app_config.txt")
 
@@ -33,11 +34,14 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+#Instantiate token verifier class
+gtoken_verifiy = GTokenVerify()
+
 @login_manager.user_loader
 def user_loader(user_id):
   return User.query.get(user_id)
 
-#Routes
+##### Routes #####
 @app.route('/')
 def index():
   return render_template('home.html', MY_CLIENT_ID=MY_CLIENT_ID)
@@ -48,29 +52,21 @@ def login():
   if request.method == 'GET':
     return render_template('login.html', MY_CLIENT_ID=MY_CLIENT_ID)
   if request.method == 'POST':
-    from google.oauth2 import id_token
-    from google.auth.transport import requests
+      token_result = gtoken_verifiy.check_token(request.form["idtoken"], MY_CLIENT_ID)
 
-    token = request.form["idtoken"]
+      #Get users unique Google ID
+      userid = token_result['sub']
 
-    idinfo = id_token.verify_oauth2_token(token, requests.Request(), MY_CLIENT_ID)
-
-    if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
-      raise ValueError('Wrong issuer.')
-
-    #Store users unique Google ID for easier access
-    userid = idinfo['sub']
-
-    registered_user = User.query.filter_by(googleID=userid).first()
-
-    if registered_user is None:
-      user_properties = {'google_id': str(userid), 'given_name': idinfo['given_name'], 'family_name': idinfo['family_name'] }
-      create_user(user_properties)
       registered_user = User.query.filter_by(googleID=userid).first()
 
-    login_user(registered_user, remember=True)
-    return url_for('events')
-    
+      if registered_user is None:
+        user_properties = {'google_id': str(userid), 'given_name': token_result['given_name'], 'family_name': token_result['family_name'] }
+        create_user(user_properties)
+        registered_user = User.query.filter_by(googleID=userid).first()
+
+      login_user(registered_user, remember=True)
+      return url_for('events')
+
 
 @app.route('/events')
 @login_required
@@ -82,7 +78,6 @@ def events():
 def logout():
     logout_user()
     return redirect('/')
-
 
 ##### Helper Functions
 
