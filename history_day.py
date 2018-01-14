@@ -54,6 +54,10 @@ def login():
   if request.method == 'POST':
       token_result = gtoken_verifiy.check_token(request.form["idtoken"], MY_CLIENT_ID)
 
+      if token_result == "Token from user not verified":
+        flash("Unable to log you in. Please check your Google account")
+        return url_for("index")
+
       #Get users unique Google ID
       userid = token_result['sub']
 
