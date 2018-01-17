@@ -7,6 +7,7 @@ from gtoken_verifier import GTokenVerify
 
 import os
 import json
+import pickle
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
@@ -76,7 +77,7 @@ def login():
 @app.route('/events')
 @login_required
 def events():
-  if 'credentials' not in session:
+  if User.query.get(session['user_id']).googleCredentials is None:
     return redirect('authorize')
   else:
     return render_template('events.html', MY_CLIENT_ID=MY_CLIENT_ID)
@@ -120,7 +121,11 @@ def oauth2callback():
   # ACTION ITEM: In a production app, you likely want to save these
   #              credentials in a persistent database instead.
   credentials = flow.credentials
-  session['credentials'] = credentials_to_dict(credentials)
+  credentials_dict = credentials_to_dict(credentials)
+  # Get user from database to add the credentials to the googleCredentials column
+  user = User.query.get(session['user_id'])
+  user.googleCredentials = pickle.dumps(credentials_dict)
+  db.session.commit()
 
   return redirect(url_for('events'))
 
