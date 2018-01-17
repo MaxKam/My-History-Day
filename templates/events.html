@@ -2,6 +2,12 @@
 {% block body %}
 
     <h1>Your events that happened on this day</h1>
+    <ul>
+        {% for event in EVENTS_LIST %}
+        <li>{{ event }} - {{ EVENTS_LIST[event] }}</li>
+        {% endfor %}
+    </ul>
+    
     
 
 {% endblock %}
