@@ -4,13 +4,13 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from configparser import ConfigParser
 from db_connect import db, User
 from gtoken_verifier import GTokenVerify
+from gcal_events import GCalEvents
 
 import os
 import json
 import pickle
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
-import googleapiclient.discovery
 
 #Instantiate ConfigParser and point to config file
 config = ConfigParser()
@@ -38,6 +38,9 @@ login_manager.login_view = 'login'
 
 #Instantiate token verifier class
 gtoken_verifiy = GTokenVerify()
+
+#Instantiate Google Calendar Events class
+gcal_events_lister = GCalEvents()
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -71,7 +74,7 @@ def login():
         registered_user = User.query.filter_by(googleID=userid).first()
 
       login_user(registered_user, remember=True)
-      return url_for('index')
+      return url_for('events')
 
 
 @app.route('/events')
@@ -80,7 +83,11 @@ def events():
   if User.query.get(session['user_id']).googleCredentials is None:
     return redirect('authorize')
   else:
-    return render_template('events.html', MY_CLIENT_ID=MY_CLIENT_ID)
+    registered_user = User.query.get(session['user_id'])
+    credentials_dict = pickle.loads(registered_user.googleCredentials)
+    events_list = gcal_events_lister.get_gcal_events(credentials_dict, API_SERVICE_NAME,
+     API_VERSION)
+    return render_template('events.html', MY_CLIENT_ID=MY_CLIENT_ID, EVENTS_LIST=events_list)
 
 @app.route('/authorize')
 def authorize():
@@ -123,8 +130,8 @@ def oauth2callback():
   credentials = flow.credentials
   credentials_dict = credentials_to_dict(credentials)
   # Get user from database to add the credentials to the googleCredentials column
-  user = User.query.get(session['user_id'])
-  user.googleCredentials = pickle.dumps(credentials_dict)
+  registered_user = User.query.get(session['user_id'])
+  registered_user.googleCredentials = pickle.dumps(credentials_dict)
   db.session.commit()
 
   return redirect(url_for('events'))
