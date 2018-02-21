@@ -1,6 +1,7 @@
 [APP_SETTINGS]
 secret_key = #Paste a random key. Can use the python OS module to generate a random key.
-
+app_domain = #Add your apps domain name. Must be valid redirect URI for your API project in the Google API Console
+app_port = #Port that your apps runs on
 
 
 [DB_SETTINGS]
@@ -13,4 +14,4 @@ scopes = #The scopes that your app is requesting from users
 api_service_name = #The service that you will be querying from Google API's
 api_version = 'v3'
 client_id = #The client id from the client secrets file
-oauthlib_insecure_transport = #1 when in dev. 0 when in production
+oauthlib_insecure_transport = # 1 when in dev. 0 when in production
