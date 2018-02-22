@@ -23,6 +23,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config.get("DB_SETTINGS", "database_uri"
 APP_DOMAIN = config.get("APP_SETTINGS", "app_domain")
 APP_PORT = int(config.get("APP_SETTINGS", "app_port"))
 
+# This is used in dev. Ideally you would want your web server to serve static assets
+app.config['static_url_path'] = '/static'
+
 #Google API settings
 CLIENT_SECRETS_FILE = config.get("GOOGLE_API", "client_secrets_file")
 SCOPES = config.get("GOOGLE_API", "scopes")
