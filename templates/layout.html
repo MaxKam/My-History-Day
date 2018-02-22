@@ -1,32 +1,41 @@
-<!DOCTYPE html>
+ <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="#">
-        <meta name="author" content="#">
-        <meta name="google-signin-client_id" content={{ MY_CLIENT_ID  }}>
-        <title>Your Day in History</title>
-        <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="#">
+    <meta name="google-signin-client_id" content={{ MY_CLIENT_ID  }}>
 
-    </head>
-    <body>
-        <a href="/logout">Logout</a>
+    <title>Your Day in History</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
+    <link href="/static/css/styles.css" rel="stylesheet">
+  </head>
+
+  <body class="text-center">
         {% if current_user.is_authenticated %}
+        <div id="logout-button"><a href="/logout">Logout</a></div>
+        
             <h3>Hi {{ current_user.firstName }}!</h3>
         {% endif %}
         {% with messages = get_flashed_messages() %}
             {% if messages %}
-                <ul class=flashes>
+                <div class="flashes">
                 {% for message in messages %}
-                    <li>{{ message }}</li>
+                    <h3>{{ message }}</h3>
                 {% endfor %}
-                </ul>
+                </div>
             {% endif %}
             {% endwith %}
         {% block body %}
         {% endblock %}
-    </body>
+   
 
-    
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+  </body>
 </html>
