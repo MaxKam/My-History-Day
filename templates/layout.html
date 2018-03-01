@@ -10,32 +10,37 @@
 
     <title>Your Day in History</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" crossorigin="anonymous">
     <link href="/static/css/styles.css" rel="stylesheet">
   </head>
 
-  <body class="text-center">
-        {% if current_user.is_authenticated %}
+  <body>
+    {% if current_user.is_authenticated %}
         <div id="logout-button"><a href="/logout">Logout</a></div>
-        
+    {% endif %}
+    <div style="text-align: center;">
+        <h1>Your Day in History</h1>
+    </div>
+    
+    
+    <div class="mainContent">
+        {% if current_user.is_authenticated %}
             <h3>Hi {{ current_user.firstName }}!</h3>
         {% endif %}
         {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <div class="flashes">
-                {% for message in messages %}
-                    <h3>{{ message }}</h3>
-                {% endfor %}
-                </div>
-            {% endif %}
-            {% endwith %}
+        {% if messages %}
+            <div class="flashes">
+            {% for message in messages %}
+                <h3>{{ message }}</h3>
+            {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %}
         {% block body %}
         {% endblock %}
-   
+    </div>
+    
+        
 
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
-        <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
   </body>
 </html>

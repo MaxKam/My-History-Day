@@ -1,12 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
-<div class="container">
-  <div class="row">
-    <div class="col align-self-center">
       <div id="my-signin2"></div> 
-    </div>
-  </div>
-</div>
+      
     <script>            
         function onSuccess(googleUser) {
             var id_token = googleUser.getAuthResponse().id_token;
