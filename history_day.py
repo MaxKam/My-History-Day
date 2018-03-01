@@ -22,6 +22,7 @@ app.secret_key = config.get("APP_SETTINGS", "secret_key")
 app.config['SQLALCHEMY_DATABASE_URI'] = config.get("DB_SETTINGS", "database_uri")
 APP_DOMAIN = config.get("APP_SETTINGS", "app_domain")
 APP_PORT = int(config.get("APP_SETTINGS", "app_port"))
+DEBUG_STATUS = config.get("APP_SETTINGS", "debug")
 
 # This is used in dev. Ideally you would want your web server to serve static assets
 app.config['static_url_path'] = '/static'
@@ -172,4 +173,4 @@ if __name__ == '__main__':
 
   # Specify a hostname and port that are set as a valid redirect URI
   # for your API project in the Google API Console.
-  app.run(APP_DOMAIN, APP_PORT, debug=False)
+  app.run(APP_DOMAIN, APP_PORT, debug=DEBUG_STATUS)
