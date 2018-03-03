@@ -8,19 +8,18 @@ class GCalEvents(object):
     def __init__(self):
         self.years_back = 5
 
-    def get_gcal_events(self, credentials_dict, api_service_name, api_version):
+    def get_gcal_events(self, credentials_dict, api_service_name, api_version, chosen_date):
         # Load credentials from the session.
         credentials = google.oauth2.credentials.Credentials(**credentials_dict)
 
         service = googleapiclient.discovery.build(
             api_service_name, api_version, credentials=credentials)
 
-
-        now = datetime.datetime.now()
-        current_year = now.year
+        now = datetime.datetime.strptime(chosen_date, '%m/%d/%Y')
+        selected_year = now.year
         events_list = {}
 
-        for year in range(current_year, current_year - self.years_back, -1):
+        for year in range(selected_year - 1, selected_year - self.years_back, -1):
             min_time = "%s-%s-%sT00:00:01Z" % (year, now.month, now.day)
             max_time = "%s-%s-%sT23:59:59Z" % (year, now.month, now.day)
 

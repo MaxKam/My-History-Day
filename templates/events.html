@@ -2,14 +2,63 @@
 {% block body %}
 
     <h3>Your events that happened on this day</h3>
-    <div>
-      {% for event in EVENTS_LIST %}
-        <p>{{ event }} - {{ EVENTS_LIST[event] }}</p>
-      {% endfor %}
+    <div id="loader"></div>
+    <div id="events_parent">
+      <ul id="events">
+      </ul>
     </div>
-                    
-                       
-                    
-            
-    
+
+    <script>
+      var ul = document.getElementById("events");
+      var spinner = document.getElementById('loader');
+
+      function todays_Date() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; //January is 0!
+        var yyyy = today.getFullYear();
+        var today = mm + '/' + dd + '/' + yyyy;
+        return today;
+      }
+
+    function get_events(chosen_date) {
+      var url_param = 'date=' + chosen_date;
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          display_events(this.responseText);
+          }
+        };
+      xhttp.open("POST", "/events", true);
+      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xhttp.send(url_param);
+    }
+
+    function display_events(events_list) {
+      if (events_list === "") {
+        var li=document.createElement('li');
+        ul.appendChild(li);
+        li.innerHTML=li.innerHTML + "Boo :( You didn't have any events";
+      }
+      else {
+        events_list = JSON.parse(events_list)
+        for (var key in events_list) {
+          if (events_list.hasOwnProperty(key)) {
+            var val = events_list[key];
+  
+            var li=document.createElement('li');
+  
+            ul.appendChild(li);
+            li.innerHTML=li.innerHTML + key.split('-')[0] + ' : ' + val;
+          }
+        }
+      }
+      spinner.style.display = "none";
+      }
+  
+
+    window.onload = function(){
+      get_events(todays_Date());
+    };
+    </script>
 {% endblock %}

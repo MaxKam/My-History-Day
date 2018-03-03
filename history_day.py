@@ -1,5 +1,5 @@
 from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash
+     render_template, flash, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from configparser import ConfigParser
 from db_connect import db, User
@@ -83,18 +83,20 @@ def login():
       login_user(registered_user, remember=True)
       return url_for('events')
 
-
-@app.route('/events')
+@app.route('/events', methods=['GET', 'POST'])
 @login_required
 def events():
-  if User.query.get(session['user_id']).googleCredentials is None:
-    return redirect('authorize')
-  else:
+  if request.method == 'GET':
+    if User.query.get(session['user_id']).googleCredentials is None:
+      return redirect('authorize')
+    return render_template('events.html')
+  if request.method == 'POST':
     registered_user = User.query.get(session['user_id'])
     credentials_dict = pickle.loads(registered_user.googleCredentials)
     events_list = gcal_events_lister.get_gcal_events(credentials_dict, API_SERVICE_NAME,
-     API_VERSION)
-    return render_template('events.html', MY_CLIENT_ID=MY_CLIENT_ID, EVENTS_LIST=events_list)
+     API_VERSION, request.form['date'])
+    return jsonify(events_list)
+
 
 @app.route('/authorize')
 def authorize():
