@@ -133,11 +133,7 @@ def oauth2callback():
   authorization_response = request.url
   flow.fetch_token(authorization_response=authorization_response)
 
-  # Store credentials in the session.
-  # ACTION ITEM: In a production app, you likely want to save these
-  #              credentials in a persistent database instead.
-  credentials = flow.credentials
-  credentials_dict = credentials_to_dict(credentials)
+  credentials_dict = credentials_to_dict(flow.credentials)
   # Get user from database to add the credentials to the googleCredentials column
   registered_user = User.query.get(session['user_id'])
   registered_user.googleCredentials = pickle.dumps(credentials_dict)
