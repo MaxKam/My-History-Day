@@ -95,7 +95,10 @@ def events():
     credentials_dict = pickle.loads(registered_user.googleCredentials)
     events_list = gcal_events_lister.get_gcal_events(credentials_dict, API_SERVICE_NAME,
      API_VERSION, request.form['date'])
-    return jsonify(events_list)
+    if events_list == "No events":
+      return "No events"
+    else:
+      return jsonify(events_list)
 
 
 @app.route('/authorize')
