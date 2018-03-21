@@ -34,6 +34,9 @@ class GCalEvents(object):
             for event in events:
                 start = event['start'].get('dateTime', event['start'].get('date'))
                 events_list[start] = event['summary']
+        
+        if len(events_list) == 0:
+            return "No events"
 
         return events_list
         
