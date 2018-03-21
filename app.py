@@ -3,7 +3,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from configparser import ConfigParser
 from db_connect import db, User
-from gtoken_verifier import GTokenVerify
+from gtoken_validator import GTokenValidator
 from gcal_events import GCalEvents
 
 import os
@@ -44,7 +44,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 #Instantiate token verifier class
-gtoken_verifiy = GTokenVerify()
+gtoken_valid = GTokenValidator()
 
 #Instantiate Google Calendar Events class
 gcal_events_lister = GCalEvents()
@@ -64,7 +64,7 @@ def login():
   if request.method == 'GET':
     return render_template('login.html', MY_CLIENT_ID=MY_CLIENT_ID)
   if request.method == 'POST':
-      token_result = gtoken_verifiy.check_token(request.form["idtoken"], MY_CLIENT_ID)
+      token_result = gtoken_valid.check_token(request.form["idtoken"], MY_CLIENT_ID)
 
       if token_result == "Token from user not verified":
         flash("Unable to log you in. Please check your Google account")
