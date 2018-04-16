@@ -1,10 +1,11 @@
-#My History Day
+
+# My History Day
 
 This app shows you events that happened on this day from your Google calendar.
 
 Built with Python and Flask. 
 
-##Prerequisites
+## Prerequisites
 Because we are authenticating users with Google using OAuth2 and accessing the Google Calendar API, you will need to create a project with Google and generate authorization credentials. Steps below explain how to do that. 
 
 Enable APIs for your project
