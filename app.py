@@ -171,6 +171,8 @@ if __name__ == '__main__':
   #     When running in production *do not* leave this option enabled.
   os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = OAUTHLIB_INSECURE_TRANSPORT 
 
-  # Specify a hostname and port that are set as a valid redirect URI
-  # for your API project in the Google API Console.
+  # Specify a hostname that you have set as a valid redirect URI
+  # for your API project in the Google API Console. If using a port other than
+  # 80 or 443 for flask, for example port 5000 during dev, then you must add the
+  # port number as part of the redirect URI in the Google API Console. 
   app.run(APP_DOMAIN, debug=DEBUG_STATUS)
