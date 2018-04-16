@@ -35,7 +35,7 @@
     }
 
     function display_events(events_list) {
-      if (events_list === "") {
+      if (events_list == "No events") {
         var li=document.createElement('li');
         ul.appendChild(li);
         li.innerHTML=li.innerHTML + "Boo :( You didn't have any events";
