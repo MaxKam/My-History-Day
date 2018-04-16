@@ -33,3 +33,13 @@ After creating your credentials, download the client_secret.json file from the A
 
 Make sure that you have pip installed and run this command from the project folder: ```pip install -r requirements.txt```
 
+
+## Setup on webserver
+This tutorial does a great job of walking through how to setup Flask with Nginx on a webserver. 
+[Flask with Nginx](https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uwsgi-and-nginx-on-ubuntu-16-04)
+
+It's highly recommended to setup Nginx with a SSL cert and use HTTPS only for the website. This is a tutorial on how to do that using Let's Encrypt, a certificate authority that provides free certs.
+[Nginx and Let's Encrypt](https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-16-04)
+
+## Contributing
+Feel free to contribute any fixes or features. 
