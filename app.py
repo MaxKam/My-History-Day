@@ -20,6 +20,7 @@ config.read("./config/app_config.ini")
 app = Flask(__name__)
 app.secret_key = config.get("APP_SETTINGS", "secret_key")
 app.config['SQLALCHEMY_DATABASE_URI'] = config.get("DB_SETTINGS", "database_uri")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 APP_DOMAIN = config.get("APP_SETTINGS", "app_domain")
 DEBUG_STATUS = config.get("APP_SETTINGS", "debug")
 
