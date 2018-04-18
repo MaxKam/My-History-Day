@@ -36,7 +36,9 @@ MY_CLIENT_ID = config.get("GOOGLE_API", "client_id")
 OAUTHLIB_INSECURE_TRANSPORT = config.get("GOOGLE_API", "oauthlib_insecure_transport")
 
 #Connect flask-sqlalchemy to Flask app
-db.init_app(app)
+with app.test_request_context():
+  db.init_app(app)
+  db.create_all()
 
 #Set up Flask-Login
 login_manager = LoginManager()
