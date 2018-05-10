@@ -1,7 +1,8 @@
 {% extends "layout.html" %}
 {% block body %}
 
-    <h3>Your events that happened on this day</h3>
+    <h3>Your events that happened on this day:</h3>
+    <h2 id="todays_date"></h2>
     <div id="loader"></div>
     <div id="events_parent">
       <ul id="events">
@@ -19,6 +20,12 @@
         var yyyy = today.getFullYear();
         var today = mm + '/' + dd + '/' + yyyy;
         return today;
+      }
+
+      function add_date() {
+        var today_date = new Date().toDateString();
+        today_date = today_date.split(" ").slice(1,3);
+        document.getElementById("todays_date").innerHTML = today_date[0] + " " + today_date[1];
       }
 
     function get_events(chosen_date) {
@@ -58,6 +65,7 @@
   
 
     window.onload = function(){
+      add_date();
       get_events(todays_Date());
     };
     </script>
