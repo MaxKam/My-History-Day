@@ -4,13 +4,16 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from configparser import ConfigParser
 from db_connect import db, User
 from gtoken_validator import GTokenValidator
-from gcal_events import GCalEvents
 
 import os
 import json
 import pickle
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
+
+import grpc
+import get_events_pb2
+import get_events_pb2_grpc
 
 #Instantiate ConfigParser and point to config file
 config = ConfigParser()
@@ -47,9 +50,6 @@ login_manager.login_view = 'login'
 
 #Instantiate token verifier class
 gtoken_valid = GTokenValidator()
-
-#Instantiate Google Calendar Events class
-gcal_events_lister = GCalEvents()
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -95,8 +95,8 @@ def events():
   if request.method == 'POST':
     registered_user = User.query.get(session['user_id'])
     credentials_dict = pickle.loads(registered_user.googleCredentials)
-    events_list = gcal_events_lister.get_gcal_events(credentials_dict, API_SERVICE_NAME,
-     API_VERSION, request.form['date'])
+    events_list = get_gcal_events(credentials_dict, API_SERVICE_NAME, API_VERSION,
+    request.form['date'])
     if events_list == "No events":
       return "No events"
     else:
@@ -168,14 +168,37 @@ def credentials_to_dict(credentials):
           'client_secret': credentials.client_secret,
           'scopes': credentials.scopes}
 
-if __name__ == '__main__':
+def get_gcal_events(credentials_dict, api_service_name, api_version, requested_date):
+    with grpc.insecure_channel('localhost:50051') as channel:
+        stub = get_events_pb2_grpc.GCalendarEventsStub(channel)
+        
+        events_request = stub.GetEvents(get_events_pb2.EventsRequest(token=credentials_dict['token'],
+        refresh_token=credentials_dict['refresh_token'],
+        token_uri=credentials_dict['token_uri'],
+        client_id=credentials_dict['client_id'],
+        client_secret=credentials_dict['client_secret'],
+        scopes=credentials_dict['scopes'],
+        api_service_name=api_service_name,
+        api_version=api_version,
+        requested_date=requested_date
+        ))
+        
+        events_list = {}
+        for event in events_request:
+          if event.event_title == "No events":
+            return "No events"
+          else:
+            events_list[event.event_start_time] = event.event_title
+        return events_list
+
+
   # When running locally, disable OAuthlib's HTTPs verification.
   # ACTION ITEM for developers:
   #     When running in production *do not* leave this option enabled.
-  os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = OAUTHLIB_INSECURE_TRANSPORT 
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = OAUTHLIB_INSECURE_TRANSPORT 
 
   # Specify a hostname that you have set as a valid redirect URI
   # for your API project in the Google API Console. If using a port other than
   # 80 or 443 for flask, for example port 5000 during dev, then you must add the
   # port number as part of the redirect URI in the Google API Console. 
-  app.run(APP_DOMAIN)
+app.run(host='0.0.0.0')
