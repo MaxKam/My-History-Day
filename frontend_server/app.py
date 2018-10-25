@@ -1,3 +1,6 @@
+import sys
+sys.path.append("../protos")
+
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -28,7 +31,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 APP_DOMAIN = config.get("APP_SETTINGS", "app_domain")
 
 # This is used in dev. Ideally you would want your web server to serve static assets
-app.config['static_url_path'] = '/static'
+app.config['static_url_path'] = './static'
 
 #Google API settings
 CLIENT_SECRETS_FILE = config.get("GOOGLE_API", "client_secrets_file")

@@ -1,3 +1,6 @@
+import sys
+sys.path.append("../protos")
+
 import datetime
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
