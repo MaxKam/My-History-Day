@@ -2,6 +2,14 @@ import sys
 sys.path.append("./rpc_classes")
 sys.path.append("../protos")
 
+import os
+import json
+import pickle
+import google.oauth2.credentials
+import google_auth_oauthlib.flow
+import grpc
+import get_events_pb2
+import get_events_pb2_grpc
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -9,15 +17,6 @@ from configparser import ConfigParser
 from db_connect import db, User
 from gtoken_validator import GTokenValidator
 
-import os
-import json
-import pickle
-import google.oauth2.credentials
-import google_auth_oauthlib.flow
-
-import grpc
-import get_events_pb2
-import get_events_pb2_grpc
 
 #Instantiate ConfigParser and point to config file
 config = ConfigParser()
