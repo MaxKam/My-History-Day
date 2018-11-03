@@ -1,0 +1,3 @@
+__pycache__/
+./config/app_config.sample.ini
+./config/client_id.sample.json
