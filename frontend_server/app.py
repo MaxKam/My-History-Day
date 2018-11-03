@@ -1,5 +1,5 @@
 import sys
-sys.path.append("../protos")
+sys.path.append("./rpc_classes")
 
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash, jsonify
