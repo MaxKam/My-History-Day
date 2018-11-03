@@ -1,3 +1,7 @@
+# Command to build Docker image must be run from top level project folder,
+# otherwise the contents of the protos folder will not be copied to the image.
+# Example: docker build -f ./events_rpc_server/Dockerfile -t history_rpc .
+
 FROM grpc/python:latest
 WORKDIR /app/
 COPY ./events_rpc_server/ /app/
