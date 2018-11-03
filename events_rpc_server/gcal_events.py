@@ -1,5 +1,5 @@
 import sys
-sys.path.append("../protos")
+sys.path.append("./rpc_classes")
 
 import datetime
 import google.oauth2.credentials
