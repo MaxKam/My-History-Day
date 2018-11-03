@@ -5,3 +5,6 @@ google-auth-httplib2
 flask
 flask-login
 flask-sqlalchemy
+grpcio
+grpcio-tools 
+googleapis-common-protos
