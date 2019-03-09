@@ -78,10 +78,12 @@ class GetEvents(get_events_pb2_grpc.GCalendarEventsServicer):
 
     
 def serve():
+    listen_port = "50051"
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     get_events_pb2_grpc.add_GCalendarEventsServicer_to_server(GetEvents(), server)
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port('localhost:%s' % listen_port)
     server.start()
+    print("Server started. Listening on port %s" % listen_port)
     try:
         while True:
             time.sleep(_ONE_DAY_IN_SECONDS)
