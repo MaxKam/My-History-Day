@@ -29,6 +29,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config.get("DB_SETTINGS", "database_uri"
 app.config['DEBUG'] = config.get("APP_SETTINGS", "debug")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 APP_DOMAIN = config.get("APP_SETTINGS", "app_domain")
+DEBUG_STATUS = config.get("APP_SETTINGS", "debug")
 
 # This is used in dev. Ideally you would want your web server to serve static assets
 app.config['static_url_path'] = './static'
@@ -204,4 +205,4 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = OAUTHLIB_INSECURE_TRANSPORT
   # for your API project in the Google API Console. If using a port other than
   # 80 or 443 for flask, for example port 5000 during dev, then you must add the
   # port number as part of the redirect URI in the Google API Console. 
-app.run(host='0.0.0.0')
+app.run(host='0.0.0.0', debug=DEBUG_STATUS)
