@@ -1,3 +1,5 @@
 __pycache__/
 ./config/app_config.sample.ini
 ./config/client_id.sample.json
+./config/app_config.ini
+dbfile.db
