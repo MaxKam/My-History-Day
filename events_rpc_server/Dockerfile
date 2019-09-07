@@ -2,7 +2,7 @@
 # otherwise the contents of the protos folder will not be copied to the image.
 # Example: docker build -f ./events_rpc_server/Dockerfile -t history_rpc .
 
-FROM grpc/python:latest
+FROM python:3.7-stretch
 WORKDIR /app/
 COPY ./events_rpc_server/ /app/
 COPY ./protos/ /app/rpc_classes
