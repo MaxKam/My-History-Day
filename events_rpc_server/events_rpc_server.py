@@ -1,6 +1,7 @@
 import sys
 sys.path.append("./rpc_classes")
 sys.path.append("../protos")
+sys.path.append("./protos")
 
 import datetime
 import google.oauth2.credentials
@@ -81,7 +82,7 @@ def serve():
     listen_port = "50051"
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     get_events_pb2_grpc.add_GCalendarEventsServicer_to_server(GetEvents(), server)
-    server.add_insecure_port('localhost:%s' % listen_port)
+    server.add_insecure_port('history-rpc:%s' % listen_port)
     server.start()
     print("Server started. Listening on port %s" % listen_port)
     try:
