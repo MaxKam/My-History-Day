@@ -7,5 +7,5 @@ WORKDIR /app/
 COPY ./frontend_server/ /app/
 COPY ./protos/ /app/rpc_classes
 RUN pip install --trusted-host pypi.python.org -r /app/requirements.txt
-EXPOSE 5000 50051
+EXPOSE 5000
 CMD ["python","/app/app.py"]
