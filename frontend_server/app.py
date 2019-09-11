@@ -1,6 +1,7 @@
 import sys
 sys.path.append("./rpc_classes")
 sys.path.append("../protos")
+sys.path.append("./protos")
 
 import os
 import json
@@ -41,6 +42,9 @@ API_SERVICE_NAME = config.get("GOOGLE_API", "api_service_name")
 API_VERSION = config.get("GOOGLE_API", "api_version")
 MY_CLIENT_ID = config.get("GOOGLE_API", "client_id")
 OAUTHLIB_INSECURE_TRANSPORT = config.get("GOOGLE_API", "oauthlib_insecure_transport")
+
+#Hostname of the RPC server that fetches events Google's API
+RPC_SERVER = config.get("APP_SETTINGS", "rpc_server")
 
 #Connect flask-sqlalchemy to Flask app
 with app.test_request_context():
@@ -173,7 +177,7 @@ def credentials_to_dict(credentials):
           'scopes': credentials.scopes}
 
 def get_gcal_events(credentials_dict, api_service_name, api_version, requested_date):
-    with grpc.insecure_channel('localhost:50051') as channel:
+    with grpc.insecure_channel('%s:50051' % RPC_SERVER) as channel:
         stub = get_events_pb2_grpc.GCalendarEventsStub(channel)
         
         events_request = stub.GetEvents(get_events_pb2.EventsRequest(token=credentials_dict['token'],
@@ -199,10 +203,11 @@ def get_gcal_events(credentials_dict, api_service_name, api_version, requested_d
   # When running locally, disable OAuthlib's HTTPs verification.
   # ACTION ITEM for developers:
   #     When running in production *do not* leave this option enabled.
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = OAUTHLIB_INSECURE_TRANSPORT 
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = OAUTHLIB_INSECURE_TRANSPORT
+os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
-  # Specify a hostname that you have set as a valid redirect URI
-  # for your API project in the Google API Console. If using a port other than
-  # 80 or 443 for flask, for example port 5000 during dev, then you must add the
-  # port number as part of the redirect URI in the Google API Console. 
+# Specify a hostname that you have set as a valid redirect URI
+# for your API project in the Google API Console. If using a port other than
+# 80 or 443 for flask, for example port 5000 during dev, then you must add the
+# port number as part of the redirect URI in the Google API Console. 
 app.run(host='0.0.0.0', debug=DEBUG_STATUS)
