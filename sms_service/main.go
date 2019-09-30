@@ -60,7 +60,7 @@ func main() {
 	fmt.Printf("Starting My History Day SMS service")
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Welcome from SMS Service Server")
+		fmt.Fprintf(w, "Welcome from My History Day SMS Service")
 	})
 
 	http.HandleFunc("/send", func(w http.ResponseWriter, r *http.Request) {
