@@ -1,0 +1,5 @@
+accountSid: # Get from Twilio API console
+authToken: # Get from Twilio API console
+urlStr: # Get from Twilio API console
+fromNumber: # Get from Twilio API console. Phone number that is used by Twilio to send the SMS
+appUrl: # URL the service is using and port if using nonstandard port number
