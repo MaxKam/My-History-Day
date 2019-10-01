@@ -9,6 +9,9 @@ class User(db.Model):
     firstName = db.Column(db.String(120), nullable=False)
     lastName = db.Column(db.String(120), nullable=False)
     googleCredentials = db.Column(db.Text)
+    sendSMS = db.Column(db.Boolean, nullable=True)
+    usersPhone = db.Column(db.String, nullable=True)
+
 
     def is_authenticated(self):
         return True
