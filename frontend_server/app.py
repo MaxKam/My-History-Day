@@ -161,6 +161,22 @@ def logout():
     logout_user()
     return redirect('/')
 
+
+@app.route('/sms-events', methods=['POST'])
+@login_required
+def sms_events():
+  registered_user = User.query.get(session['user_id'])
+  if 'sendSMS' in request.form and request.form['phoneNumber'] != "":
+    registered_user.sendSMS = True
+    registered_user.usersPhone = request.form['phoneNumber']
+    db.session.commit()
+  else:
+    registered_user.sendSMS = False
+    registered_user.usersPhone = None
+    db.session.commit()
+  return redirect(url_for('events'))
+
+
 ##### Helper Functions
 
 def create_user(user_props):

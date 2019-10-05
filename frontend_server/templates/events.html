@@ -9,6 +9,23 @@
       </ul>
     </div>
 
+    <button id="modal-btn">&#9881;</button>
+
+    <div class="modal">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <form action="/sms-events" method="post">
+          <p>Check to send daily SMS text message with events:</p>
+          <input type="checkbox" name="sendSMS">
+          <p>Phone Number:</p>
+          <input type="text" name="phoneNumber" value="">
+          <br><br>
+          <input type="submit" value="Submit">
+        </form>
+      </div>
+    </div>
+
+
     <script>
       var ul = document.getElementById("events");
       var spinner = document.getElementById('loader');
@@ -68,5 +85,20 @@
       add_date();
       get_events(todays_Date());
     };
+
+  let modalBtn = document.getElementById("modal-btn")
+  let modal = document.querySelector(".modal")
+  let closeBtn = document.querySelector(".close-btn")
+  modalBtn.onclick = function(){
+    modal.style.display = "block"
+  }
+  closeBtn.onclick = function(){
+    modal.style.display = "none"
+  }
+  window.onclick = function(e){
+    if(e.target == modal){
+      modal.style.display = "none"
+    }
+  }
     </script>
 {% endblock %}
