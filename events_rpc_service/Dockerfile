@@ -4,7 +4,7 @@
 
 FROM python:3.7-stretch
 WORKDIR /app/
-COPY ./events_rpc_server/ /app/
+COPY ./events_rpc_service/ /app/
 COPY ./protos/ /app/rpc_classes
 RUN pip install --trusted-host pypi.python.org -r /app/requirements.txt
 EXPOSE 50051
