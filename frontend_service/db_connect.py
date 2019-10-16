@@ -5,12 +5,12 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    googleID = db.Column(db.String, nullable=False, unique=True)
-    firstName = db.Column(db.String(120), nullable=False)
-    lastName = db.Column(db.String(120), nullable=False)
-    googleCredentials = db.Column(db.Text)
-    sendSMS = db.Column(db.Boolean, nullable=True)
-    usersPhone = db.Column(db.String, nullable=True)
+    google_id = db.Column(db.String, nullable=False, unique=True)
+    first_name = db.Column(db.String(120), nullable=False)
+    last_name = db.Column(db.String(120), nullable=False)
+    google_credentials = db.Column(db.PickleType, nullable=True)
+    send_sms = db.Column(db.Boolean, nullable=True)
+    users_phone = db.Column(db.String, nullable=True)
 
 
     def is_authenticated(self):
