@@ -1,18 +1,18 @@
-import sqlite3
+from sqlalchemy import create_engine
+import psycopg2
 
 
 class DBConnect(object):
 
-    def __init__(self, db_path):
-        self.conn = sqlite3.connect(db_path)
+    def __init__(self, db_user, db_password, db_host, db_port, db_name):
+        self.engine = create_engine('postgresql://{}:{}@{}:{}/{}'.format(\
+            db_user, db_password, db_host, db_port, db_name))
 
     
     def get_sms_users(self):
-        self.c = self.conn.cursor()
         self.sms_users = []
-        for row in self.c.execute('SELECT * FROM users WHERE sendSMS=True'):
+        for row in self.engine.execute("select * from users;"):
             self.sms_users.append(row)
-        self.c.close()
         return self.sms_users
 
 

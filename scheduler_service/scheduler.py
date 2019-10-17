@@ -26,9 +26,14 @@ def send_events(sms_url, to_number, events_list):
 def schedule():
     config = ConfigParser()
     config.read("./app_config.ini")
+    db_name = config.get("APP_SETTINGS", "db_name")
+    db_user = config.get("APP_SETTINGS", "db_user")
+    db_password = config.get("APP_SETTINGS", "db_password")
+    db_host = config.get("APP_SETTINGS", "db_host")
+    db_port = config.get("APP_SETTINGS", "db_port")
 
     gcal_events = GetEvents(config.get("APP_SETTINGS", "rpc_server"))
-    dbcon = DBConnect(config.get("APP_SETTINGS", "db_path"))
+    dbcon = DBConnect(db_user, db_password, db_host, db_port, db_name)
     users = dbcon.get_sms_users()
     today = datetime.date.today()
 
