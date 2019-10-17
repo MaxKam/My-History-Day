@@ -6,4 +6,5 @@ FROM python:3.7-stretch
 WORKDIR /app/
 COPY ./scheduler_service/ /app/
 COPY ./protos/ /app/rpc_classes
+RUN pip install --trusted-host pypi.python.org -r /app/requirements.txt
 CMD ["python","/app/scheduler.py"]
