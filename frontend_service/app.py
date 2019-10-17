@@ -83,12 +83,12 @@ def login():
       #Get users unique Google ID
       userid = token_result['sub']
 
-      registered_user = User.query.filter_by(googleID=userid).first()
+      registered_user = User.query.filter_by(google_id=userid).first()
 
       if registered_user is None:
         user_properties = {'google_id': str(userid), 'given_name': token_result['given_name'], 'family_name': token_result['family_name'] }
         create_user(user_properties)
-        registered_user = User.query.filter_by(googleID=userid).first()
+        registered_user = User.query.filter_by(google_id=userid).first()
 
       login_user(registered_user, remember=True)
       return url_for('events')
@@ -97,12 +97,12 @@ def login():
 @login_required
 def events():
   if request.method == 'GET':
-    if User.query.get(session['user_id']).googleCredentials is None:
+    if User.query.get(session['user_id']).google_credentials is None:
       return redirect('authorize')
     return render_template('events.html')
   if request.method == 'POST':
     registered_user = User.query.get(session['user_id'])
-    credentials_dict = pickle.loads(registered_user.googleCredentials)
+    credentials_dict = pickle.loads(registered_user.google_credentials)
     events_list = get_gcal_events(credentials_dict, API_SERVICE_NAME, API_VERSION,
     request.form['date'])
     if events_list == "No events":
@@ -149,7 +149,7 @@ def oauth2callback():
   credentials_dict = credentials_to_dict(flow.credentials)
   # Get user from database to add the credentials to the googleCredentials column
   registered_user = User.query.get(session['user_id'])
-  registered_user.googleCredentials = pickle.dumps(credentials_dict)
+  registered_user.google_credentials = pickle.dumps(credentials_dict)
   db.session.commit()
 
   return redirect(url_for('events'))
@@ -167,12 +167,12 @@ def logout():
 def sms_events():
   registered_user = User.query.get(session['user_id'])
   if 'sendSMS' in request.form and request.form['phoneNumber'] != "":
-    registered_user.sendSMS = True
-    registered_user.usersPhone = request.form['phoneNumber']
+    registered_user.send_sms = True
+    registered_user.users_phone = request.form['phoneNumber']
     db.session.commit()
   else:
-    registered_user.sendSMS = False
-    registered_user.usersPhone = None
+    registered_user.send_sms = False
+    registered_user.users_phone = None
     db.session.commit()
   return redirect(url_for('events'))
 
@@ -180,7 +180,7 @@ def sms_events():
 ##### Helper Functions
 
 def create_user(user_props):
-  new_user = User(googleID=user_props['google_id'], firstName=user_props['given_name'], lastName=user_props['family_name'])
+  new_user = User(google_id=user_props['google_id'], first_name=user_props['given_name'], last_name=user_props['family_name'])
   db.session.add(new_user)
   db.session.commit()
 
