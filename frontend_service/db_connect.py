@@ -8,7 +8,7 @@ class User(db.Model):
     google_id = db.Column(db.String, nullable=False, unique=True)
     first_name = db.Column(db.String(120), nullable=False)
     last_name = db.Column(db.String(120), nullable=False)
-    google_credentials = db.Column(db.PickleType, nullable=True)
+    google_credentials = db.Column(db.LargeBinary, nullable=True)
     send_sms = db.Column(db.Boolean, nullable=True)
     users_phone = db.Column(db.String, nullable=True)
 
