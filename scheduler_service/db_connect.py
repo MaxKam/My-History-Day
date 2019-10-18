@@ -11,7 +11,7 @@ class DBConnect(object):
     
     def get_sms_users(self):
         self.sms_users = []
-        for row in self.engine.execute("select * from users;"):
+        for row in self.engine.execute("select * from users where send_sms=True;"):
             self.sms_users.append(row)
         return self.sms_users
 
