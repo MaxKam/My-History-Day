@@ -2,7 +2,7 @@
 # otherwise the contents of the protos folder will not be copied to the image.
 # Example: docker build -f ./scheduler_service/Dockerfile -t history_scheduler .
 
-FROM python:3.7-stretch
+FROM python:3.8-alpine
 WORKDIR /app/
 COPY ./scheduler_service/ /app/
 COPY ./protos/ /app/rpc_classes

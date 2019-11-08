@@ -1,4 +1,4 @@
-FROM golang:1.13.1
+FROM golang:alpine
 WORKDIR /app
 COPY . .
 RUN go get github.com/spf13/viper

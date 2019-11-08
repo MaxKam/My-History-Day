@@ -2,7 +2,7 @@
 # otherwise the contents of the protos folder will not be copied to the image.
 # Example: docker build -f ./frontend_server/Dockerfile -t history_frontend .
 
-FROM python:3.7-stretch
+FROM python:3.8-alpine
 WORKDIR /app/
 COPY ./frontend_service/ /app/
 COPY ./protos/ /app/rpc_classes
