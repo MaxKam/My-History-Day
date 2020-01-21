@@ -6,6 +6,7 @@ sys.path.append("./protos")
 import os
 import json
 import pickle
+import redis
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import grpc
@@ -58,6 +59,16 @@ login_manager.login_view = 'login'
 
 #Instantiate token verifier class
 gtoken_valid = GTokenValidator()
+
+# Create Redis connection object
+REDIS_URL = config.get("DB_SETTINGS", "redis_url")
+REDIS_PORT = config.get("DB_SETTINGS", "redis_port")
+REDIS_PASSWORD = config.get("DB_SETTINGS", "redis_password")
+
+rcache = redis.Redis(
+  host=REDIS_URL,
+  port=REDIS_PORT,
+  password=REDIS_PASSWORD)
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -214,7 +225,6 @@ def get_gcal_events(credentials_dict, api_service_name, api_version, requested_d
           else:
             events_list[event.event_start_time] = event.event_title
         return events_list
-
 
   # When running locally, disable OAuthlib's HTTPs verification.
   # ACTION ITEM for developers:
