@@ -226,6 +226,21 @@ def get_gcal_events(credentials_dict, api_service_name, api_version, requested_d
             events_list[event.event_start_time] = event.event_title
         return events_list
 
+def check_cache(key_name):
+  cache_value = rcache.get(key_name)
+  if cache_value != None:
+    return cache_value
+  else:
+    return None
+
+def set_cache(key_name, key_value):
+  if key_name != '':
+    status = rcache.set(key_name, key_value)
+    if status == True:
+      return True
+    else:
+      return False
+
   # When running locally, disable OAuthlib's HTTPs verification.
   # ACTION ITEM for developers:
   #     When running in production *do not* leave this option enabled.
